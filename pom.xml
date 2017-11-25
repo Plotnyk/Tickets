@@ -1,0 +1,43 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <!--Версия Мавен-->
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--Група-->
+    <groupId>org.plotnyk</groupId>
+    <!-- Уникальное имя проекта (артефакт)-->
+    <artifactId>tickets</artifactId>
+    <!--Версия сборки-->
+    <version>0.0.1</version>
+    <!--pom - сборка на уровне IDE-->
+    <packaging>pom</packaging>
+    <!-- Описываются все зависимые компоненты проекта-->
+    <modules>
+        <module>presentation</module>
+        <module>model</module>
+        <module>persistence</module>
+    </modules>
+
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <build>
+        <!-- Дополнительный набор настроек
+             необходимый при сборке проекта -->
+        <plugins>
+            <plugin>
+                <!-- Плагин который собирает проект на уровне языка Java 1.8 -->
+                <!-- Добавлено в связи с тем что у нас разнобой в настройках -->
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.2</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+
+    </build>
+
+</project>
