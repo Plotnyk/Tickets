@@ -1,4 +1,4 @@
-package main.java.app.model.entity.transport;
+package app.model.entity.transport;
 
 /**
  * Type of the station/transport/vehicle

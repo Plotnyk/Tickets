@@ -20,7 +20,17 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <org.junit.ver>4.12</org.junit.ver>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${org.junit.ver}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
     <build>
         <!-- Дополнительный набор настроек
@@ -37,7 +47,6 @@
                 </configuration>
             </plugin>
         </plugins>
-
     </build>
 
 </project>

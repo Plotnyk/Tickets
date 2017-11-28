@@ -1,7 +1,7 @@
-package main.java.app.model.entity.base;
+package app.model.entity.base;
 
 
-import main.java.app.model.entity.person.Account;
+import app.model.entity.person.Account;
 
 import java.time.LocalDateTime;
 
