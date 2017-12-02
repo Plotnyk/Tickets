@@ -6,8 +6,9 @@ import java.util.List;
 
 /**
  *Entry point to perform operations
- * over geographic entities
+ * over geographic entities_
  * @author Plotnyk
+ *
  *  */
 public interface GeographicService {
 
