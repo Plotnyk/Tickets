@@ -2,7 +2,7 @@ package app.model.entity.geography;
 
 /**
  *Geographical coordinate of an object
- * @author jeka
+ * @author Plotnyk
  *  */
 public class Coordinate {
     private double x;

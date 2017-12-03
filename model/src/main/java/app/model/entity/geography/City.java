@@ -11,6 +11,7 @@ import java.util.Set;
 
 /**
  * Any locality that district where city is placed
+ * @author Plotnyk
  * */
 public class City extends AbstractEntity {
     private String name;

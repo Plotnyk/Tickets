@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 /**
  * Base class for all business entities
- * @author jeka
+ * @author Plotnyk
  *
  */
 public abstract class AbstractEntity {

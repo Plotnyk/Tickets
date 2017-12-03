@@ -3,7 +3,7 @@ package app.model.entity.geography;
 /**
  * Value type that stores address attributes
  * of the specific office or person
- * @author jeka
+ * @author Plotnyk
  * */
 public class Address {
     private String zipCode;
