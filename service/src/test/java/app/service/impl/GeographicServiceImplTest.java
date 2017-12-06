@@ -1,6 +1,8 @@
-package app.service;
+package app.service.impl;
+
 
 import app.model.entity.geography.City;
+import app.service.GeographicService;
 import org.junit.Before;
 import org.junit.Test;
 

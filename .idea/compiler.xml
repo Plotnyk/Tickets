@@ -9,12 +9,14 @@
         <module name="model" />
         <module name="persistence" />
         <module name="presentation" />
+        <module name="service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="model" target="1.8" />
       <module name="persistence" target="1.8" />
       <module name="presentation" target="1.8" />
+      <module name="service" target="1.8" />
       <module name="tickets" target="1.8" />
     </bytecodeTargetLevel>
   </component>

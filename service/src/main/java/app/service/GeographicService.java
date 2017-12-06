@@ -1,6 +1,5 @@
 package app.service;
 
-
 import app.model.entity.geography.City;
 
 import java.util.List;
@@ -25,3 +24,4 @@ public interface GeographicService {
      */
     void saveCity(City city);
 }
+

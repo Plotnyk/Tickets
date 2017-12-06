@@ -1,7 +1,9 @@
-package app.service;
+package app.service.impl;
+
 
 import app.infra.util.CommonUtil;
 import app.model.entity.geography.City;
+import app.service.GeographicService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,3 +34,4 @@ public class GeographicServiceImpl implements GeographicService {
         }
     }
 }
+

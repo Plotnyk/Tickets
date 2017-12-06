@@ -4,10 +4,19 @@
     <parent>
         <groupId>org.plotnyk</groupId>
         <artifactId>tickets</artifactId>
-        <version>0.0.1</version>
+        <version>0.0.6</version>
     </parent>
     <artifactId>presentation</artifactId>
     <packaging>war</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.plotnyk</groupId>
+            <artifactId>service</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>

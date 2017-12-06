@@ -8,7 +8,7 @@
     <!-- Уникальное имя проекта (артефакт)-->
     <artifactId>tickets</artifactId>
     <!--Версия сборки-->
-    <version>0.0.1</version>
+    <version>0.0.6</version>
     <!--pom - сборка на уровне IDE-->
     <packaging>pom</packaging>
     <!-- Описываются все зависимые компоненты проекта-->
@@ -16,11 +16,13 @@
         <module>presentation</module>
         <module>model</module>
         <module>persistence</module>
+        <module>service</module>
     </modules>
 
     <properties>
         <java.version>1.8</java.version>
         <org.junit.ver>4.12</org.junit.ver>
+        <jersey.version>2.19</jersey.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
