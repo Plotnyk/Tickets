@@ -2,6 +2,7 @@ package app.service.transform.impl;
 
 
 import app.infra.util.Checks;
+import app.infra.util.CommonUtil;
 import app.infra.util.ReflectionUtil;
 import app.model.entity.base.AbstractEntity;
 import app.rest.dto.base.BaseDTO;
@@ -31,8 +32,7 @@ public class SimpleDTOTransformer implements Transformer {
 
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("SimpleDTOTransformer.transform: {} DTO object",
-                    ReflectionToStringBuilder.toString(dto,
-                            ToStringStyle.SHORT_PREFIX_STYLE));
+                    CommonUtil.toString(dto));
         }
 
         return dto;
@@ -57,8 +57,7 @@ public class SimpleDTOTransformer implements Transformer {
 
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("SimpleDTOTransformer.transform: {} entity",
-                    ReflectionToStringBuilder.toString(entity,
-                            ToStringStyle.SHORT_PREFIX_STYLE));
+                    CommonUtil.toString(entity));
         }
 
         return entity;

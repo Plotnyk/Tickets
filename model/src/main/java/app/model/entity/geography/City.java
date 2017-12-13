@@ -45,12 +45,13 @@ public class City extends AbstractEntity {
      * @param transportType
      * */
     public Station addStation(final TransportType transportType) {
-        Objects.requireNonNull(transportType, "transport type parameter is not initialized");
-        if (stations == null) {
-            stations = new HashSet<>();
+        Objects.requireNonNull(transportType, "transportType parameter is not initialized");
+        if(stations == null) {
+            stations = new HashSet<Station>();
         }
         Station station = new Station(this, transportType);
         stations.add(station);
+
         return station;
     }
 

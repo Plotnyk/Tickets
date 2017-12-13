@@ -4,6 +4,8 @@ import app.model.entity.transport.TransportType;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Set;
+
 import static org.junit.Assert.*;
 
 /**
@@ -28,6 +30,7 @@ public class CityTest {
     @Test(expected = NullPointerException.class)
     public void testAddNullStationFailure() {
         city.addStation(null);
+
         assertTrue(false);
     }
 
@@ -46,6 +49,17 @@ public class CityTest {
 
     private boolean containsStation(City city, Station station) {
         return city.getStations().contains(station);
+    }
+
+    @Test
+    public  void testGetSetStationSuccess() {
+        City city = new City("Odessa");
+        city.setId(1);
+        city.addStation(TransportType.AUTO);
+        city.addStation(TransportType.RAILWAY);
+        city.addStation(TransportType.AVIA);
+
+        assertEquals(city.getStations().size(), 3);
     }
 
 }
