@@ -1,24 +1,88 @@
 package app.rest.service;
 
-import jersey.repackaged.com.google.common.collect.Lists;
+import app.model.entity.geography.City;
+import app.model.entity.transport.TransportType;
+import app.rest.dto.CityDTO;
+import app.rest.service.base.BaseResource;
+import app.service.GeographicService;
+import app.service.impl.GeographicServiceImpl;
+import app.service.transform.Transformer;
+import app.service.transform.impl.SimpleDTOTransformer;
+import org.apache.commons.lang3.math.NumberUtils;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * {@link CityResource} is REST web-service that handles city-related requests
+ *
  * @author Plotnyk
- * */
+ */
 
 @Path("cities")
-public class CityResource {
+public class CityResource extends BaseResource {
 
+    /**
+     * Underlying source of data
+     */
+    private final GeographicService service;
+
+    /**
+     * DTO <-> Entity transformer</->
+     */
+    private final Transformer transformer;
+
+    public CityResource() {
+        this.transformer = new SimpleDTOTransformer();
+        this.service = new GeographicServiceImpl();
+
+        City city = new City("Odessa");
+        city.addStation(TransportType.AUTO);
+        service.saveCity(city);
+    }
+
+    /**
+     * Returns al the existing cities
+     *
+     * @return
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<String> findCities() {
-        return Lists.newArrayList("Odessa", "Kiyv");
+    public List<CityDTO> findCities() {
+        return service.findCities().stream().map((city) -> transformer.transform(city, CityDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Save new city instance
+     *
+     * @return
+     */
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void saveCity(CityDTO cityDTO) {
+        service.saveCity(transformer.untransform(cityDTO, City.class));
+    }
+
+    /**
+     * Returns city with specified identifier
+     * @return
+     */
+    @Path("/{cityId}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findCityById(@PathParam("cityId") final String cityId) {
+        if (!NumberUtils.isNumber(cityId)) {
+            return BAD_REQUEST;
+        }
+        Optional<City> city = service.findCityById(NumberUtils.toInt(cityId));
+        if (!city.isPresent()) {
+            return NOT_FOUND;
+        }
+        return ok(transformer.transform(city.get(), CityDTO.class));
     }
 }

@@ -2,10 +2,13 @@ package app.infra.util;
 
 import app.infra.exception.ConfigurationException;
 import app.infra.exception.flow.InvalidParameterException;
+import app.infra.util.annotation.Ignore;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
@@ -35,7 +38,7 @@ public class ReflectionUtilTest {
     }
 
     @Test
-    public void copyFieldsSuccess() {
+    public void copyCopyFieldsSuccess() {
         Source src = new Source();
         src.setValue(10);
         Destination dest = new Destination();
@@ -45,6 +48,33 @@ public class ReflectionUtilTest {
         assertEquals(dest.getValue(), 10);
     }
 
+    @Test
+    public void copyFindSimilarFieldsWithIgnoreSuccess() {
+        List<String> fields = ReflectionUtil.findSimilarFields(Source.class, Destination.class);
+        assertFalse(fields.contains("ignored"));
+    }
+
+    @Test
+    public void copyFindSimilarFieldsForStaticAndFinalSuccess() {
+        List<String> fields = ReflectionUtil.findSimilarFields(Source.class, Destination.class);
+        assertFalse(fields.contains("staticField"));
+        assertFalse(fields.contains("finalField"));
+    }
+
+    @Test
+    public void copyFindSimilarFieldsForBaseFieldSuccess() {
+        List<String> fields = ReflectionUtil.findSimilarFields(Source.class, Destination.class);
+        assertTrue(fields.contains("baseField"));
+    }
+
+    @Test
+    public void testGetFieldSuccess() {
+        List<Field> fieldsF = ReflectionUtil.getFields(Source.class);
+        List<String> fields = fieldsF.stream().map(field -> field.getName()).collect(Collectors.toList());
+        assertTrue(fields.contains("baseField"));
+    }
+
+
     @Test(expected = InvalidParameterException.class)
     public void copyFieldsDestinationNullFailure() {
         Source src = new Source();
@@ -53,18 +83,39 @@ public class ReflectionUtilTest {
 
 }
 
-class Source {
+class BaseSource {
+    private int baseField;
+}
+
+class BaseDestination {
+    private int baseField;
+}
+
+class Source extends BaseSource {
     private int value;
 
     private String text;
+
+    @Ignore
+    private int ignored = 2;
+
+    private  static int staticField;
+
+    private  final int finalField = 0;
 
     public void setValue(int value) {
         this.value = value;
     }
 }
 
-class Destination {
+class Destination extends BaseDestination{
     private int value;
+
+    private int ignored;
+
+    private  static int staticField;
+
+    private  final int finalField = 0;
 
     public int getValue() {
         return value;

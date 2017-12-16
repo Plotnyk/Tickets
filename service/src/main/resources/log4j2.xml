@@ -14,7 +14,7 @@
         </logger>
         <Root level="DEBUG">
             <AppenderRef ref="STDOUT" level = "DEBUG"/>
-            <!--<AppenderRef ref="fileLog" level = "DEBUG"/>-->
+            <AppenderRef ref="fileLog" level = "DEBUG"/>
         </Root>
     </Loggers>
 </Configuration>
