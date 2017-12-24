@@ -10,6 +10,7 @@ import app.service.transform.Transformer;
 import app.service.transform.impl.SimpleDTOTransformer;
 import org.apache.commons.lang3.math.NumberUtils;
 
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -36,12 +37,15 @@ public class CityResource extends BaseResource {
      */
     private final Transformer transformer;
 
-    public CityResource() {
-        this.transformer = new SimpleDTOTransformer();
-        this.service = new GeographicServiceImpl();
+    @Inject
+    public CityResource(GeographicService service, Transformer transformer) {
+        this.transformer = transformer;
+        this.service = service;
 
         City city = new City("Odessa");
         city.addStation(TransportType.AUTO);
+        city.setDistrict("Odessa");
+        city.setRegion("Odessa");
         service.saveCity(city);
     }
 

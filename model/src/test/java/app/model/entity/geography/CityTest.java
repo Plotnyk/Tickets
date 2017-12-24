@@ -37,13 +37,13 @@ public class CityTest {
     @Test
     public void testRemoveStationSuccess() {
         Station station = city.addStation(TransportType.AVIA);
-        city.removeStatioon(station);
+        city.removeStation(station);
         assertTrue(city.getStations().isEmpty());
     }
 
     @Test(expected = NullPointerException.class)
     public void testRemoveNullStationFailure() {
-        city.removeStatioon(null);
+        city.removeStation(null);
         assertTrue(false);
     }
 

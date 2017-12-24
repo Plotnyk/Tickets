@@ -1,9 +1,13 @@
 package app.model.entity.geography;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
 /**
  *Geographical coordinate of an object
  * @author Plotnyk
  *  */
+@Embeddable
 public class Coordinate {
     private double x;
 
@@ -14,6 +18,7 @@ public class Coordinate {
         this.y = y;
     }
 
+    @Column(name = "X")
     public double getX() {
         return x;
     }
@@ -22,6 +27,7 @@ public class Coordinate {
         this.x = x;
     }
 
+    @Column(name = "Y")
     public double getY() {
         return y;
     }

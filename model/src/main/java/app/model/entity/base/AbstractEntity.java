@@ -3,6 +3,7 @@ package app.model.entity.base;
 
 import app.model.entity.person.Account;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
@@ -10,7 +11,9 @@ import java.time.LocalDateTime;
  * @author Plotnyk
  *
  */
+@MappedSuperclass
 public abstract class AbstractEntity {
+    public static final String FIELD_CREATED_AT = "createdAt";
     /**
      * Unique entity identifier
      */
@@ -19,7 +22,7 @@ public abstract class AbstractEntity {
     * Timestamp of entity creation
     *
     * */
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
     /**
      * Timestamp of entity last modification
      * */
@@ -27,12 +30,16 @@ public abstract class AbstractEntity {
     /**
      * Person who create specific entity
      * */
-    private Account createBy;
+    private Account createdBy;
     /**
      * Last person who modified entity
      * */
     private Account modifiedBy;
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     public int getId() {
         return id;
     }
@@ -41,14 +48,16 @@ public abstract class AbstractEntity {
         this.id = id;
     }
 
-    public LocalDateTime getCreateAt() {
-        return createAt;
+    @Column(name = "CREATED_AT", nullable = false, updatable = false)
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateAt(LocalDateTime createAt) {
-        this.createAt = createAt;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
+    @Column(name = "MODIFIED_AT", insertable = false)
     public LocalDateTime getModifiedAt() {
         return modifiedAt;
     }
@@ -57,20 +66,31 @@ public abstract class AbstractEntity {
         this.modifiedAt = modifiedAt;
     }
 
-    public Account getCreateBy() {
-        return createBy;
+    @OneToOne(fetch = FetchType.LAZY, cascade = {})
+    @JoinColumn(name = "CREATED_BY", updatable = false)
+    public Account getCreatedBy() {
+        return createdBy;
     }
 
-    public void setCreateBy(Account createBy) {
-        this.createBy = createBy;
+    public void setCreatedBy(Account createdBy) {
+        this.createdBy = createdBy;
     }
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = {})
+    @JoinColumn(name = "MODIFIED_BY", insertable = false)
     public Account getModifiedBy() {
         return modifiedBy;
     }
 
     public void setModifiedBy(Account modifiedBy) {
         this.modifiedBy = modifiedBy;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (getId() == 0) {
+            setCreatedAt(LocalDateTime.now());
+        }
     }
 
     @Override
@@ -85,12 +105,12 @@ public abstract class AbstractEntity {
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if(obj == null)
+        if (obj == null)
             return false;
-        if(getClass() != obj.getClass())
+        if (getClass() != obj.getClass())
             return false;
         AbstractEntity other = (AbstractEntity) obj;
-        if(id != other.id)
+        if (id != other.id)
             return false;
         return true;
     }

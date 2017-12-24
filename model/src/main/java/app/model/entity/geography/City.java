@@ -4,6 +4,7 @@ import app.infra.util.CommonUtil;
 import app.model.entity.base.AbstractEntity;
 import app.model.entity.transport.TransportType;
 
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -13,7 +14,11 @@ import java.util.Set;
  * Any locality that district where city is placed
  * @author Plotnyk
  * */
+@Table(name = "CITY")
+@Entity
 public class City extends AbstractEntity {
+    public static final String FIELD_NAME = "name";
+
     private String name;
 
     /**
@@ -47,7 +52,7 @@ public class City extends AbstractEntity {
     public Station addStation(final TransportType transportType) {
         Objects.requireNonNull(transportType, "transportType parameter is not initialized");
         if(stations == null) {
-            stations = new HashSet<Station>();
+            stations = new HashSet<>();
         }
         Station station = new Station(this, transportType);
         stations.add(station);
@@ -60,7 +65,7 @@ public class City extends AbstractEntity {
      *
      * @param station
      */
-    public void removeStatioon(Station station) {
+    public void removeStation(Station station) {
         Objects.requireNonNull(station, "station parameter is not initialized");
         if (stations == null) {
             return;
@@ -68,6 +73,7 @@ public class City extends AbstractEntity {
         stations.remove(station);
     }
 
+    @Column(name = "NAME", nullable = false, length = 32)
     public String getName() {
         return name;
     }
@@ -76,6 +82,7 @@ public class City extends AbstractEntity {
         this.name = name;
     }
 
+    @Column(name = "DISTRICT", nullable = false, length = 32)
     public String getDistrict() {
         return district;
     }
@@ -84,6 +91,7 @@ public class City extends AbstractEntity {
         this.district = district;
     }
 
+    @Column(name = "REGION", nullable = false, length = 32)
     public String getRegion() {
         return region;
     }
@@ -92,6 +100,7 @@ public class City extends AbstractEntity {
         this.region = region;
     }
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "city", orphanRemoval = true)
     public Set<Station> getStations() {
         return CommonUtil.getSafeSet(stations);
     }

@@ -21,12 +21,10 @@ import static org.junit.Assert.*;
  * @author Plotnyk
  * */
 public class CityResourceTest extends JerseyTest {
-
     @Override
     protected Application configure() {
         return new JerseyConfig();
     }
-
 
     @Test
     public void testFindCitiesSuccess() {
@@ -40,11 +38,12 @@ public class CityResourceTest extends JerseyTest {
 
     @Test
     public void testFindCityByIdSuccess() {
-        CityDTO cityDTO = target("cities/1").request().get(CityDTO.class);
-        assertNotNull(cityDTO);
-        assertEquals(cityDTO.getId(), 1);
-        assertEquals(cityDTO.getName(), "Odessa");
+        CityDTO city = target("cities/1").request().get(CityDTO.class);
+        assertNotNull(city);
+        assertEquals(city.getId(), 1);
+        assertEquals(city.getName(), "Odessa");
     }
+
     @Test
     public void testFindCityByIdNotFound() {
         Response response = target("cities/2").request().get(Response.class);
@@ -63,6 +62,8 @@ public class CityResourceTest extends JerseyTest {
     public void testSaveCitySuccess() {
         CityDTO city = new CityDTO();
         city.setName("Kiev");
+        city.setDistrict("Odessa");
+        city.setRegion("Odessa");
 
         Response response = target("cities").request().post(Entity.entity(city, MediaType.APPLICATION_JSON));
         assertEquals(response.getStatus(), Response.Status.NO_CONTENT.getStatusCode());

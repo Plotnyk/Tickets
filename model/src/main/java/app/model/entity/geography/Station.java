@@ -5,6 +5,7 @@ import app.model.entity.transport.TransportType;
 import app.model.search.criteria.StationCriteria;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.persistence.*;
 import java.util.Objects;
 
 /**
@@ -12,8 +13,13 @@ import java.util.Objects;
  * of transport. Multiple stations compose route of the trip.
  * @author Plotnyk
  * */
-
+@Table(name = "STATION")
+@Entity
 public class Station extends AbstractEntity {
+    public static final String FIELD_TRANSPORT_TYPE = "transportType";
+
+    public static final String FIELD_CITY = "city";
+
     private City city;
 
     private Address address;
@@ -27,6 +33,9 @@ public class Station extends AbstractEntity {
 
     private TransportType transportType;
 
+    public Station() {
+
+    }
     /**
      * You shouldn't create station object directly. use
      * {@link City} functionality instead
@@ -34,14 +43,21 @@ public class Station extends AbstractEntity {
      * @param transportType
      * */
     public Station(final City city, final TransportType transportType) {
-        this.city = city;
-        this.transportType = transportType;
+        this.city = Objects.requireNonNull(city);
+        this.transportType = Objects.requireNonNull(transportType);
     }
 
+    @ManyToOne(cascade = {}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "CITY_ID")
     public City getCity() {
         return city;
     }
 
+    public void setCity(City city) {
+        this.city = city;
+    }
+
+    @Embedded
     public Address getAddress() {
         return address;
     }
@@ -50,6 +66,7 @@ public class Station extends AbstractEntity {
         this.address = address;
     }
 
+    @Column(name = "PHONE", length=16)
     public String getPhone() {
         return phone;
     }
@@ -58,6 +75,7 @@ public class Station extends AbstractEntity {
         this.phone = phone;
     }
 
+    @Embedded
     public Coordinate getCoordinate() {
         return coordinate;
     }
@@ -66,9 +84,19 @@ public class Station extends AbstractEntity {
         this.coordinate = coordinate;
     }
 
+
+    /* EnumType.ORDINAL - хранение в БД будет по индексу
+    *  EnumType.STRING  - хранение в БД будет по значению*/
+    @Enumerated
+    @Column(nullable=false, name="TRANSPORT_TYPE")
     public TransportType getTransportType() {
         return transportType;
     }
+
+    public void setTransportType(TransportType transportType) {
+        this.transportType = transportType;
+    }
+
 
     /**
      * Verifies if current station matches specified criteria

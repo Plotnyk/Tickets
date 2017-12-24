@@ -6,9 +6,13 @@ import app.model.entity.geography.City;
 import app.model.entity.geography.Station;
 import app.model.search.criteria.StationCriteria;
 import app.model.search.criteria.range.RangeCriteria;
+import app.persistence.repository.CityRepository;
+import app.persistence.repository.StationRepository;
+import app.persistence.repository.inmemory.InMemoryCityRepository;
 import app.service.GeographicService;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.inject.Inject;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -18,54 +22,35 @@ import java.util.stream.Stream;
  * @author Plotnyk
  * */
 public class GeographicServiceImpl implements GeographicService {
-    /**
-     * Internal list of cities
-     * */
-    private final List<City> cities;
+    private final CityRepository cityRepository;
 
-    /**
-     * Auto-increment counter for entity id generation
-     * */
-    private int counter = 0;
+    private final StationRepository stationRepository;
 
-    private int stationCounter = 0;
-
-    public GeographicServiceImpl() {
-        this.cities = new ArrayList<City>();
+    @Inject
+    public GeographicServiceImpl(CityRepository cityRepository,
+                                 StationRepository stationRepository) {
+        this.cityRepository = cityRepository;
+        this.stationRepository = stationRepository;
     }
 
     @Override
     public List<City> findCities() {
-        return CommonUtil.getSafeList(cities);
+        return cityRepository.findAll();
     }
 
     @Override
     public Optional<City> findCityById(int id) {
-        return cities.stream().filter((city) -> city.getId() == id).findFirst();
+        return Optional.ofNullable(cityRepository.findById(id));
     }
 
     @Override
-    public List<Station> searchStations(StationCriteria criteria, RangeCriteria rangeCriteria) {
-        Set<Station> stations = new HashSet<>();
-        //получаем список всех станций в городах
-        for (City city : cities) {
-            stations.addAll(city.getStations());
-        }
-
-        return stations.stream().filter((station) -> station.match(criteria)).collect(Collectors.toList());
+    public List<Station> searchStations(final StationCriteria criteria, final RangeCriteria rangeCriteria) {
+        return stationRepository.findAllByCriteria(criteria);
     }
 
     @Override
     public void saveCity(City city) {
-        if (!cities.contains(city)) {
-            city.setId(++counter);
-            cities.add(city);
-        }
-        city.getStations().forEach((station) ->{
-            if (station.getId() == 0) {
-                station.setId(++stationCounter);
-            }
-        });
+        cityRepository.save(city);
     }
 }
 
